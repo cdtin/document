@@ -152,6 +152,8 @@ npm-cache路径：`npm config set cache "D:\Develop\nvm\npm-cache"`
 > 如上图的taobao、cnpm
  
 [![NPM version][npm-image]][npm-url] 
+
+
 [npm-image]: https://img.shields.io/npm/v/nrm.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/nrm 
 
