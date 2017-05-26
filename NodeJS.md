@@ -12,7 +12,11 @@ NVM(Node Version Manager)是Node.js的一个版本管理工具，可以切换不
 
 ### 安装NVM
 - 下载并安装在全英文路径下：[下载NVM](https://github.com/coreybutler/nvm-windows/releases)
- 
+
+![](https://github.com/cdting/document/blob/master/image/NodeJS/1.png)
+
+<img src="./image/NodeJS/1.png"/>
+---
 2.选择安装路径（全英文路径）
  
 3．选择切换node的路径（也要全英文）
@@ -93,3 +97,4 @@ https://www.npmjs.com/package/gulp-mini
 https://www.npmjs.com/package/gulp-minify-l
 最小化图像：gulp-imagemin
 https://www.npmjs.com/package/gulp-imagemin
+
