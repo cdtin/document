@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+<script>
+    window.onload = function() {
+        //Generator函数是一个异步编程解决方案，返回的是一个遍历器对象，可以通过yield返回多个值和遍历器对象。
+        //它也有prototype属性，他返回的是遍历器对象，不会是this对象
+        //Generator函数的一个重要实际意义就是用于处理异步操作，改写回调函数
+
+
+        console.log("**********************************申明一个Generator函数***********************************");
+        //申明一个Generator函数
+        function* gen() {
+
+            //yield后面加*可以用于for of遍历，可以不用next()方法
+            yield*["a", "b", "c"];
+        };
+
+        function* a() {
+            yield 1 + 1;
+            yield 5 + 5;
+            yield* gen(); //如果不加*返回的是一个gen对象，这里可以直接拿到值
+            return 10 + 10;
+        };
+
+        var aa = a();
+        console.log(aa.next()); //value 2
+        console.log(aa.next()); //value 10
+        console.log(aa.next()); //value a
+        console.log(aa.next()); //value b
+        console.log(aa.next()); //value c
+        console.log(aa.next()); //value 20 done true
+        //如果超出是undefined
+        console.log(aa.next()); //value undefined done true
+
+        /***********************************************************************************************/
+        console.log("********************************递归返回遍历器数组***************************************");
+        //递归返回遍历器数组
+        function* itemTree(tree) {
+            //当是一个数组的时候，进入
+            if (Array.isArray(tree)) {
+                for (let i = 0; i < tree.length; i++) {
+                    //返回一个遍历器对象，也就是一个数组调用递归单个返回
+                    yield* itemTree(tree[i]);
+                }
+            } else {
+                //不是数组，直接返回
+                yield tree;
+            }
+        }
+
+        const tree = [1, [2, 3, 4], 5, 6, [7, 8, 9]];
+
+
+        //for ... of 中调用Generator申明的遍历器函数
+        for (let value of itemTree(tree)) {
+            console.log(value); // 1 2 3 4 5 6 7 8 9
+        }
+
+
+        /**********************************************************************************/
+        console.log("*****************************状态机*********************************************");
+
+        //写法优美，安全，比传统使用标识符更安全
+        var clock = function*(_) {
+                yield _;
+                console.log('Tick!');
+                yield _;
+                console.log('Tock!');
+            }
+            // var a = clock();
+            // a.next();
+            // a.next();
+            // a.next();
+            // a.next();
+            // a.next();
+
+        for (let key of clock()) {
+            console.log(key);
+        }
+    }
+</script>
