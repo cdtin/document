@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="main"></div>
+</body>
+
+</html>
+<script>
+    window.onload = function() {
+        /*
+         *Promise就是一个异步编程的容器，里面保存着执行成功和执行失败的事件。
+         *Promise有两个特点：
+         *1.对象的状态不受外界影响，他有三种状态Pending(进行中),Resolved(已完成 Fulfilled)，Rejected(已失败)
+         *2.一旦状态改变，就不会再变，任何时候都可以得到这个结果
+         *优点：
+         * 有了Promise对象，可以将异步操作以同步操作的流程表达出来，避免层层嵌套回掉函数。
+         *缺点：
+         *  一旦新建无法取消Promise，如果不设置毁掉函数，Promise内部抛出的错误不会被外部所捕获。
+         */
+
+
+        console.log("***************************Promise基本使用********************************");
+
+
+        //resolve是异步操作成功的回掉函数
+        //reject是异步操作失败的毁掉函数
+        var promise = new Promise((resolve, reject) => {
+            //需要异步操作的内容
+            //
+            resolve("成功了");
+            //如果成功了，是不会执行reject
+            reject(new Error('出错了'));
+        });
+
+        //第一个是成功的回掉函数
+        // promise.then((msg) => {
+        //         console.log(msg);
+        //     },
+        //     //第二个是失败的回掉函数，不建议这样使用，一般可以通过链式访问后面再更then，
+        //     //最好使用catch来捕获错误
+        //     (err) => {
+        //         console.log(err);
+        //     });
+
+        //建议使用
+        promise.then((msg) => {
+            console.log(msg);
+        }).catch((err) => {
+            console.log(err);
+        })
+
+
+        console.log("****************************简单示例************************************");
+
+        //封装一个jsonp异步操作
+
+        function getJSONP(url) {
+            return new Promise(function(resolve, reject) {
+                var element = document.createElement("script");
+                element.src = url;
+                element.id = "jsonp";
+                document.body.appendChild(element);
+                var timer = setInterval(function() {
+                    if (window.jsonps !== undefined) {
+                        resolve(window.jsonps);
+                        clearInterval(timer);
+                    }
+                }, 0);
+
+                setInterval(function() {
+                    if (window.jsonps === undefined) {
+                        reject(new Error('超时'));
+                        clearInterval(timer);
+                    }
+
+                }, 5000);
+
+            })
+        }
+
+        // getJSONP("http://api.douban.com/v2/movie/in_theaters?callback=test").then(function(json) {
+        //     var main = document.getElementById("main");
+        //     var ulElement = document.createElement('ul');
+
+        //     for (var i = 0; i < json["subjects"].length; i++) {
+        //         var liElement = document.createElement('li');
+        //         liElement.innerHTML = json["subjects"][i].title;
+        //         ulElement.appendChild(liElement);
+        //     }
+        //     main.appendChild(ulElement);
+
+        // }).catch(function(err) {
+        //     console.log(err);
+        // });
+
+
+
+        console.log('*****************************Promise.all()***************************');
+
+        //多个Promise实例,也就是同时开启多个异步操作，所有异步操作完毕后...
+        //Promise.race()开启多个异步操作，先进先出
+
+        var promises = ['in_theaters', 'coming_soon', 'top250'].map(function(id) {
+            return getJSONP("http://api.douban.com/v2/movie/" + id + "?callback=test");
+        });
+
+        Promise.race(promises).then(function(json) {
+            var main = document.getElementById("main");
+            var ulElement = document.createElement('ul');
+            // console.log(json+"我是json");
+            for (var i = 0; i < json["subjects"].length; i++) {
+                var liElement = document.createElement('li');
+                liElement.innerHTML = json["subjects"][i].title;
+                ulElement.appendChild(liElement);
+            }
+            main.appendChild(ulElement);
+        }).catch(function(err) {
+            console.log(err);
+        })
+
+
+    }; 
+
+
+    //jsonp回掉函数
+    function test(json) {
+        window.jsonps = json;
+        console.log(json);
+        var scriptElement = document.getElementById("jsonp");
+        var bodyElement = document.getElementsByTagName("body");
+        bodyElement[0].removeChild(scriptElement);
+    };
+</script>

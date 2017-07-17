@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    window.onload = function() {
+        console.log('********************************async函数***********************');
+        //async是ES2017引入的一个Generator函数的语法糖
+
+        //Generator与async比较
+        //其实就是把Generator的* 换 async 和 yield换成 await
+        //不需要调用next方法，返回的是一个Promise对象，其他并无太大差距
+
+        function* gen() {
+            yield 1 + 1;
+           var b= yield 2 + 2;
+           console.log(b);
+            return 3 + 3;
+        }
+
+        async function sy() {
+            var a = await 1 + 1;
+            var b = await 2 + 2;
+            console.log(a);
+            console.log(b);
+            // return 3 + 3;
+            return new Error('报错了');
+        }
+        var a = gen();
+        // var b = sy();
+        // console.log(b);
+        console.log(a.next());
+
+        //由于aync返回的是一个Promise对象可以是使用then
+        sy().then(v=>console.log(v)).catch(e=>console.log(e));
+
+
+
+    }
+</script>
