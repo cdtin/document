@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+<script>
+    window.onload = function () {
+
+        console.log('*****************************es6 class*********************************');
+        //定义以类
+        class Point {
+            //定义构造函数
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            //类方法
+            sum() {
+                return this.x + this.y;
+            }
+        }
+
+        var point = new Point(5, 5);
+        var s = point.sum();
+        console.log(s);
+        //getOwnPropertyNames获取对象自身的全部属性名，这里是x,y
+        console.log(Object.getOwnPropertyNames(point));
+        //获取对象自身可枚举的属性键
+        console.log(Object.keys(point));
+        //判断一个属性定义在本身(true)还是原型链(false)
+        console.log(point.hasOwnProperty("x")); //true
+        console.log(point.hasOwnProperty("v")); //false
+
+        //可以通过原型链添加方法,例：
+        point.__proto__.jian = function (x, y) {
+            //也可以调用构造函数的赋值
+            // return this.x-this.y;
+
+            return x - y;
+        };
+
+        var j = point.jian(6, 5);
+        console.log(j);
+        //可以使用name属性获得当前类名
+        console.log(Point.name);
+
+
+        //类的另外一种定义方式
+        const myClass = class PrintMe {
+            constructor() {
+
+            }
+
+            sum(a, b) {
+                return a + b;
+            }
+        }
+
+        //这里的类名是myClass不是ProintMe，也是需要new的
+        let printMe = new myClass();
+        let p = printMe.sum(3, 1);
+        console.log(p);
+
+        //类和模块内部默认就是严格模式，所以不需要些use strict
+
+
+
+        console.log('*****************class继承extends***********************************');
+
+        //class中的继承是extends
+        class myExtend extends Point {
+            constructor(x, y, color) {
+                super(x, y); //调用父类的构造函数
+                // this.x=x;
+                // this.y=y;
+                this.color = color;
+
+            }
+        }
+
+        let m = new myExtend(5, 5, 'black');
+        console.log(m.sum());
+        //注意：在子类构造函数中只有调用super以后才可以使用this关键字，否则会报错 
+
+        //查看一类是否继承某一个类
+        console.log(Object.getPrototypeOf(myExtend) === Point);
+
+        //extends是可以继承原生的构造函数，如Boolean/String/Array等，
+        //因为extends可以继承原生构造函数中的属性，构造函数，es5中是无法获取原生构造函数中的属性的。
+        //也就是说es6是自定义原生数据结构
+        class myArray extends Array {
+            constructor() {
+                super();
+                this.array = [];
+            }
+
+            charArray() {
+                return "我是array扩展";
+            }
+        }
+
+        let arr = new myArray();
+        // console.log(Array.charArray());
+        console.log(arr.charArray());
+
+
+        console.log('**************************静态方法*******************************');
+
+        class myStatic {
+            //定义状态属性
+            static mystatic = 200;
+            //定义静态方法
+            static a(a, b) {
+                return a + b;
+            }
+        }
+
+        console.log(myStatic.a(5, 5));
+        console.log(myStatic.mystatic);
+
+
+
+    }
+</script>
