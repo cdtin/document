@@ -1,4 +1,10 @@
-# CentOS7 安装 Shadowsocks
+# CentOS7 安装 Shadowsocks(仅适用于KVM架构)
+
+## 查看系统架构
+```shell
+    sudo yum install virt-what
+    sudo virt-what
+```
 
 ## 修改登录密码
 ```shell
@@ -85,4 +91,35 @@ WantedBy=multi-user.target
 ## 更新grub文件
 ```shell
     sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \'
+    sudo grub2-set-default 0
 ```
+
+## 重启VPS
+```shell
+    reboot
+```
+
+## 开启BBR
+1. 打开sysctl.conf文件
+```shell
+    sudo vi /etc/sysctl.conf 
+```
+2. 在文件末尾添加如下配置
+```config
+    net.core.default_qdisc = fq
+    net.ipv4.tcp_congestion_control = bbr
+```
+
+## 查看配置是否添加成功
+```shell
+    sysctl -p
+```
+- 如果显示有刚添加的两条数据表示成功
+
+## 查看BBR是否成功开启
+```shell
+    sysctl net.ipv4.tcp_available_congestion_control
+    lsmod | grep bbr
+```
+
+# THE END
