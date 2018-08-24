@@ -78,7 +78,7 @@ SVN软件安装完成后还需要建立SVN库
 
 ```shell
     [users]
-    liuting=123456
+    tin=123456
     webcode=123456
 ```
 
@@ -92,7 +92,7 @@ SVN软件安装完成后还需要建立SVN库
 
 ```shell
     [/]
-    liuting=rw 
+    tin=rw 
 
     [/WebCode]
     webcode=rw;
@@ -180,7 +180,7 @@ root     12538     1  0 14:40 ?        00:00:00 svnserve -d -r /opt/svn/reposito
 
 
     > 客户端连接地址：svn://104.236.166.246  
-    > 用户名/密码： liuting/123456
+    > 用户名/密码： tin/123456
 
 # END
 
