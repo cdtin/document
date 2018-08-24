@@ -34,7 +34,7 @@
         "server_port": 443,
         "password": "ABC123qwe",
         "method": "aes-256-cfb",
-        "timeout": 600,
+        "timeout": 600
     }
 ```
 
@@ -63,6 +63,11 @@ WantedBy=multi-user.target
 ``` shell
     sudo systemctl enable shadowsocks
     sudo systemctl start shadowsocks
+```
+
+4. 查看Shadowsocks服务是否启动成功
+```shell
+systemctl status shadowsocks -l
 ```
 
 ## 开启端口号
