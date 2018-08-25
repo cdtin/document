@@ -8,7 +8,7 @@ sudo virt-what
 
 ## 修改登录密码
 ```shell
-    sudo passwd
+sudo passwd
 ```
 
 ## 安装pip包管理工具
